@@ -1,22 +1,32 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: iPad AI Agent API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: agent
+    description: AI Agent operations
+  - name: terminal
+    description: Terminal/SSH operations
+  - name: browser
+    description: Browser automation operations
+  - name: files
+    description: File management operations
+  - name: camera
+    description: Camera and vision operations
+  - name: settings
+    description: App settings operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +34,316 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /agent/chat:
+    post:
+      operationId: agentChat
+      tags: [agent]
+      summary: Send message to AI agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: Agent response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+
+  /agent/history:
+    get:
+      operationId: getChatHistory
+      tags: [agent]
+      summary: Get conversation history
+      responses:
+        "200":
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatHistory"
+    delete:
+      operationId: clearChatHistory
+      tags: [agent]
+      summary: Clear conversation history
+      responses:
+        "200":
+          description: Cleared
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /terminal/execute:
+    post:
+      operationId: executeTerminalCommand
+      tags: [terminal]
+      summary: Execute a terminal command
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TerminalCommandRequest"
+      responses:
+        "200":
+          description: Command result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminalCommandResponse"
+
+  /terminal/status:
+    get:
+      operationId: getTerminalStatus
+      tags: [terminal]
+      summary: Get SSH/terminal connection status
+      responses:
+        "200":
+          description: Terminal status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminalStatus"
+
+  /browser/navigate:
+    post:
+      operationId: browserNavigate
+      tags: [browser]
+      summary: Open a URL in Safari / browser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrowserNavigateRequest"
+      responses:
+        "200":
+          description: Navigation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrowserActionResponse"
+
+  /browser/action:
+    post:
+      operationId: browserAction
+      tags: [browser]
+      summary: Perform browser action (click, fill, scrape)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrowserActionRequest"
+      responses:
+        "200":
+          description: Action result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrowserActionResponse"
+
+  /browser/screenshot:
+    post:
+      operationId: browserScreenshot
+      tags: [browser]
+      summary: Take a screenshot of current browser page
+      responses:
+        "200":
+          description: Screenshot result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrowserScreenshotResponse"
+
+  /browser/status:
+    get:
+      operationId: getBrowserStatus
+      tags: [browser]
+      summary: Get browser automation status
+      responses:
+        "200":
+          description: Browser status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrowserStatus"
+
+  /browser/shortcuts-webhook:
+    post:
+      operationId: shortcutsWebhook
+      tags: [browser]
+      summary: Apple Shortcuts webhook endpoint for iPad Safari control
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShortcutsWebhookRequest"
+      responses:
+        "200":
+          description: Webhook processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortcutsWebhookResponse"
+
+  /files/list:
+    get:
+      operationId: listFiles
+      tags: [files]
+      summary: List files in a directory
+      parameters:
+        - name: path
+          in: query
+          schema:
+            type: string
+            default: "/"
+      responses:
+        "200":
+          description: File list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileListResponse"
+
+  /files/upload:
+    post:
+      operationId: uploadFile
+      tags: [files]
+      summary: Upload a file
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                path:
+                  type: string
+      responses:
+        "200":
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+
+  /files/download/{filename}:
+    get:
+      operationId: downloadFile
+      tags: [files]
+      summary: Download a file
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  /files/delete:
+    delete:
+      operationId: deleteFile
+      tags: [files]
+      summary: Delete a file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filename:
+                  type: string
+              required: [filename]
+      responses:
+        "200":
+          description: Delete result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /camera/analyze:
+    post:
+      operationId: analyzeImage
+      tags: [camera]
+      summary: Analyze an image with AI vision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageAnalysisRequest"
+      responses:
+        "200":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageAnalysisResponse"
+
+  /settings/get:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get current app settings
+      responses:
+        "200":
+          description: Current settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppSettings"
+
+  /settings/update:
+    post:
+      operationId: updateSettings
+      tags: [settings]
+      summary: Update app settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppSettingsUpdate"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppSettings"
+
+  /setup/guide:
+    get:
+      operationId: getSetupGuide
+      tags: [settings]
+      summary: Get iPad setup guide and instructions
+      responses:
+        "200":
+          description: Setup guide
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetupGuide"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +351,369 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required: [success, message]
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        role:
+          type: string
+          enum: [user, assistant, system, tool]
+        content:
+          type: string
+        timestamp:
+          type: string
+        toolCalls:
+          type: array
+          items:
+            type: object
+            properties:
+              tool:
+                type: string
+              input:
+                type: string
+              output:
+                type: string
+            required: [tool, input, output]
+        thinking:
+          type: string
+      required: [id, role, content, timestamp]
+
+    ChatRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        includeTools:
+          type: boolean
+          default: true
+      required: [message]
+
+    ChatResponse:
+      type: object
+      properties:
+        reply:
+          type: string
+        thinking:
+          type: string
+        toolsUsed:
+          type: array
+          items:
+            type: object
+            properties:
+              tool:
+                type: string
+              input:
+                type: string
+              output:
+                type: string
+            required: [tool, input, output]
+        messageId:
+          type: string
+      required: [reply, messageId]
+
+    ChatHistory:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+      required: [messages]
+
+    TerminalCommandRequest:
+      type: object
+      properties:
+        command:
+          type: string
+        timeout:
+          type: integer
+          default: 30
+      required: [command]
+
+    TerminalCommandResponse:
+      type: object
+      properties:
+        stdout:
+          type: string
+        stderr:
+          type: string
+        exitCode:
+          type: integer
+        success:
+          type: boolean
+        duration:
+          type: number
+      required: [stdout, stderr, exitCode, success, duration]
+
+    TerminalStatus:
+      type: object
+      properties:
+        connected:
+          type: boolean
+        host:
+          type: string
+        port:
+          type: integer
+        mode:
+          type: string
+          enum: [ssh, local, disconnected]
+        lastCommand:
+          type: string
+      required: [connected, mode]
+
+    BrowserNavigateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+        source:
+          type: string
+          enum: [shortcuts, playwright, manual]
+          default: shortcuts
+      required: [url]
+
+    BrowserActionRequest:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [click, fill, scrape, screenshot, evaluate]
+        selector:
+          type: string
+        value:
+          type: string
+        script:
+          type: string
+      required: [action]
+
+    BrowserActionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        result:
+          type: string
+        url:
+          type: string
+        title:
+          type: string
+      required: [success, result]
+
+    BrowserScreenshotResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        imageData:
+          type: string
+        url:
+          type: string
+      required: [success, imageData]
+
+    BrowserStatus:
+      type: object
+      properties:
+        active:
+          type: boolean
+        currentUrl:
+          type: string
+        currentTitle:
+          type: string
+        lastAction:
+          type: string
+        source:
+          type: string
+      required: [active]
+
+    ShortcutsWebhookRequest:
+      type: object
+      properties:
+        action:
+          type: string
+        url:
+          type: string
+        pageContent:
+          type: string
+        pageTitle:
+          type: string
+        screenshotBase64:
+          type: string
+        timestamp:
+          type: string
+      required: [action]
+
+    ShortcutsWebhookResponse:
+      type: object
+      properties:
+        received:
+          type: boolean
+        nextAction:
+          type: string
+        data:
+          type: string
+      required: [received]
+
+    FileListResponse:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/FileItem"
+        path:
+          type: string
+      required: [files, path]
+
+    FileItem:
+      type: object
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        type:
+          type: string
+          enum: [file, directory]
+        modified:
+          type: string
+        mimeType:
+          type: string
+      required: [name, size, type, modified]
+
+    FileUploadResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        filename:
+          type: string
+        size:
+          type: integer
+        path:
+          type: string
+      required: [success, filename, size, path]
+
+    ImageAnalysisRequest:
+      type: object
+      properties:
+        imageData:
+          type: string
+          description: Base64 encoded image
+        prompt:
+          type: string
+          default: "Describe this image in detail"
+        mimeType:
+          type: string
+          default: "image/jpeg"
+      required: [imageData]
+
+    ImageAnalysisResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        objects:
+          type: array
+          items:
+            type: string
+        confidence:
+          type: number
+        model:
+          type: string
+      required: [description, model]
+
+    AppSettings:
+      type: object
+      properties:
+        groqApiKey:
+          type: string
+        llmModel:
+          type: string
+        sshHost:
+          type: string
+        sshPort:
+          type: integer
+        sshUsername:
+          type: string
+        enableCamera:
+          type: boolean
+        enableFileAccess:
+          type: boolean
+        enableTerminal:
+          type: boolean
+        enableBrowser:
+          type: boolean
+        maxLoops:
+          type: integer
+        agentTimeout:
+          type: integer
+      required: [llmModel, enableCamera, enableFileAccess, enableTerminal, enableBrowser]
+
+    AppSettingsUpdate:
+      type: object
+      properties:
+        groqApiKey:
+          type: string
+        llmModel:
+          type: string
+        sshHost:
+          type: string
+        sshPort:
+          type: integer
+        sshUsername:
+          type: string
+        sshPassword:
+          type: string
+        enableCamera:
+          type: boolean
+        enableFileAccess:
+          type: boolean
+        enableTerminal:
+          type: boolean
+        enableBrowser:
+          type: boolean
+        maxLoops:
+          type: integer
+        agentTimeout:
+          type: integer
+
+    SetupGuide:
+      type: object
+      properties:
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              step:
+                type: integer
+              title:
+                type: string
+              description:
+                type: string
+              command:
+                type: string
+            required: [step, title, description]
+        qrCodeUrl:
+          type: string
+        shortcutsUrl:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        webhookUrl:
+          type: string
+      required: [steps, permissions, webhookUrl]

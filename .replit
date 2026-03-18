@@ -24,3 +24,14 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+LLM_MODEL = "llama-3.3-70b-versatile"
+MAX_LOOPS = "20"
+AGENT_TIMEOUT = "180"
+ENABLE_CAMERA = "true"
+ENABLE_FILE_ACCESS = "true"
+ENABLE_TERMINAL = "true"
+ENABLE_BROWSER = "true"

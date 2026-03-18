@@ -1,0 +1,13 @@
+packages:
+  "framer-motion": "For page transitions, smooth panel switching, and interactive element animations"
+  "clsx": "For conditional tailwind class merging"
+  "tailwind-merge": "For conflict-free tailwind class merging"
+  "date-fns": "For formatting timestamps in chat and file lists"
+  "qrcode.react": "For rendering the setup QR code in the settings panel"
+  "react-markdown": "For formatting AI agent responses"
+  "react-dropzone": "For file drag and drop upload zone"
+
+notes:
+  - Assumes standard modern browser environment with access to navigator.mediaDevices for camera
+  - WebSockets or polling used for real-time updates (polling implemented via React Query refetchInterval)
+  - Uses @workspace/api-client-react for all API interactions

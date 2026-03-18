@@ -9,18 +9,28 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@workspace/db": "workspace:*",
     "@workspace/api-zod": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2"
+    "groq-sdk": "^1.1.1",
+    "multer": "^2.1.1",
+    "node-ssh": "^13.2.1",
+    "playwright": "^1.58.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3",
+    "ssh2": "^1.17.0"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
-    "@types/express": "^5.0.6",
-    "@types/cors": "^2.8.19",
     "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.1.0",
+    "@types/node": "catalog:",
+    "@types/node-ssh": "^11.0.0",
+    "@types/qrcode": "^1.5.6",
     "esbuild": "^0.27.3",
     "tsx": "catalog:"
   }
