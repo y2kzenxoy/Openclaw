@@ -1,0 +1,135 @@
+You are an expert full-stack developer and security researcher. 
+Build me a complete app with every feature below. 
+Do everything automatically, fix all errors, never stop, never ask questions.
+
+WHAT TO BUILD:
+A powerful AI agent web app that can:
+1. Run terminal commands on a connected iPad
+2. Control Safari browser automatically
+3. Access iPad files and camera
+4. All controlled through a clean iPad-friendly web UI
+
+═══════════════════════════════════════
+PART 1 - CORE SERVER
+═══════════════════════════════════════
+- Python Flask + SocketIO backend
+- Port 8080
+- Dark modern UI frontend
+- Real time communication via websockets
+- Auto install any missing packages on startup
+- Never crash, always recover from errors
+
+═══════════════════════════════════════
+PART 2 - IPAD TERMINAL CONTROL
+═══════════════════════════════════════
+- Set up an SSH server the iPad can connect to
+- Use the a-Shell app on iPad as the terminal endpoint
+- Allow the AI agent to send terminal commands to iPad via SSH
+- Stream command output back to the web UI in real time
+- Support these iPad terminal commands:
+  * List files and directories
+  * Read and write files
+  * Run Python scripts
+  * Run JavaScript
+  * Git operations
+  * Package installation
+- Build a terminal emulator UI panel in the web app
+- Show live output as commands run
+- Allow user to also type manual commands
+
+═══════════════════════════════════════
+PART 3 - SAFARI BROWSER AUTOMATION
+═══════════════════════════════════════
+- Use Apple Shortcuts + JavaScript injection to control Safari
+- Build a system where the AI can:
+  * Open URLs in Safari
+  * Read page content from Safari
+  * Click elements on web pages
+  * Fill in forms automatically
+  * Take screenshots of web pages
+  * Scrape data from any website
+- Create a Shortcuts webhook endpoint the iPad can call
+- Build UI to show what Safari is currently doing
+- Use Playwright or Selenium as fallback for server side browsing
+
+═══════════════════════════════════════
+PART 4 - IPAD FILE AND CAMERA ACCESS
+═══════════════════════════════════════
+- Build a file upload endpoint so iPad can send files to the agent
+- Build a file download system so agent can send files to iPad
+- Create a drag and drop file interface in the web UI
+- Camera access via browser MediaDevices API:
+  * Access iPad front and back camera from the web app
+  * Capture photos and send to AI agent for analysis
+  * AI agent can describe, analyze, and process images
+  * Stream live camera feed in the web UI
+- Use Claude vision or Groq vision model to analyze captured images
+
+═══════════════════════════════════════
+PART 5 - AI AGENT BRAIN
+═══════════════════════════════════════
+- Use Groq API with deepseek-r1-distill-llama-70b model
+- Agent has access to all tools above
+- Agent can autonomously decide to:
+  * Run terminal commands on iPad
+  * Browse websites
+  * Read and write files
+  * Analyze camera images
+  * Search the web with DuckDuckGo
+  * Remember context across conversations
+- Stream all agent thinking and actions to UI in real time
+- MAX_LOOPS=20, TIMEOUT=180
+- If agent gets stuck, auto restart and try different approach
+
+═══════════════════════════════════════
+PART 6 - WEB UI (iPad optimized)
+═══════════════════════════════════════
+Build a dark themed UI with these panels:
+- Chat panel: talk to the AI agent
+- Terminal panel: live terminal output
+- Browser panel: show what Safari is doing
+- Files panel: browse, upload, download files
+- Camera panel: live camera feed + capture button
+- Settings panel: API keys, SSH config, permissions
+- Bottom tab bar for navigation between panels
+- All buttons minimum 48px for touch
+- Works perfectly in Safari on iPad
+
+═══════════════════════════════════════
+PART 7 - IPAD SETUP INSTRUCTIONS
+═══════════════════════════════════════
+When the app is running, automatically generate:
+- A step by step guide for setting up a-Shell on iPad
+- A Shortcuts automation file the user can import
+- A QR code pointing to the web app URL
+- A checklist of every permission needed on iPad
+
+═══════════════════════════════════════
+ENVIRONMENT VARIABLES - create .env automatically:
+═══════════════════════════════════════
+GROQ_API_KEY=put_your_key_here
+LLM_MODEL=deepseek-r1-distill-llama-70b
+MAX_LOOPS=20
+AGENT_TIMEOUT=180
+PORT=8080
+SSH_PORT=2222
+ENABLE_CAMERA=true
+ENABLE_FILE_ACCESS=true
+ENABLE_TERMINAL=true
+ENABLE_BROWSER=true
+
+═══════════════════════════════════════
+REQUIREMENTS:
+═══════════════════════════════════════
+- requirements.txt with every single dependency
+- Auto install missing packages on startup
+- Error recovery for every single feature
+- If a feature fails, disable it gracefully and continue
+- Never show errors to user, always show friendly messages
+- Log everything to a log file
+
+START NOW. BUILD EVERYTHING. 
+DO NOT STOP. DO NOT ASK QUESTIONS. 
+FIX EVERY ERROR AUTOMATICALLY.
+WHEN DONE PRINT THE URL AND A FULL 
+CHECKLIST OF WORKING FEATURES.
