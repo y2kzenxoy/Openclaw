@@ -1,0 +1,12 @@
+{
+  "appId": "com.yourname.openclaw",
+  "appName": "OpenClaw",
+  "webDir": "dist",
+  "server": {
+    "url": "YOUR-REPLIT-URL-HERE",
+    "cleartext": true
+  },
+  "ios": {
+    "scheme": "OpenClaw"
+  }
+}
