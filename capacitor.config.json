@@ -3,7 +3,7 @@
   "appName": "OpenClaw",
   "webDir": "dist",
   "server": {
-    "url": "YOUR-REPLIT-URL-HERE",
+    "url": "https://YOUR-REPLIT-URL.replit.app",
     "cleartext": true
   },
   "ios": {
