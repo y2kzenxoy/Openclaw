@@ -2,16 +2,27 @@
 
 ## Overview
 
-Full-stack AI agent web app optimized for iPad control. Powered by Groq (llama-3.3-70b-versatile). Dark terminal-hacker UI with 6 panels navigated by a bottom tab bar.
+Full-stack AI agent web app optimized for iPad control. Powered by Groq (llama-3.3-70b-versatile). OpenClaw dark UI (red/orange accent, near-black) with left sidebar on desktop and bottom nav on mobile. 6 functional panels + comprehensive permissions system.
 
 ## Features
 
-1. **AI Chat** - Talk to the agent powered by Groq LLM. It can guide terminal, browser, and file operations.
-2. **Terminal** - Execute commands on the server or via SSH on an iPad running a-Shell.
-3. **Browser Automation** - Navigate URLs with Playwright server-side, or control Safari on iPad via Apple Shortcuts webhook.
-4. **File Manager** - Upload, download, delete files with drag & drop support.
-5. **Camera** - Access iPad camera via browser MediaDevices API, capture photos, analyze with Groq vision.
-6. **Settings** - Configure SSH, API keys, feature toggles, view iPad setup guide with QR code.
+1. **AI Chat** - Groq LLM chat with tool-call visualization (colored badges), session sidebar, thinking traces, voice input (SpeechRecognition), text-to-speech toggle, clipboard paste button.
+2. **Terminal** - SSH or local command execution, command history (arrow keys), emerald terminal output.
+3. **Browser Automation** - Navigate URLs with Playwright, CSS selector actions, screenshots, Apple Shortcuts webhook for Safari on iPad.
+4. **File Manager** - Upload, download, delete files with drag & drop, file preview, all file types supported.
+5. **Camera & Vision** - Front/back camera, capture & AI analysis via Groq llama-4-scout, corner bracket viewfinder overlay.
+6. **Settings** - Two-tab layout: General (SSH, model, module toggles, QR code) + Permissions (full dashboard).
+
+## Permissions System (new)
+
+- **First-launch onboarding** — full-screen welcome with 13 permission cards, "Grant All" button, skip option.
+- **`usePermissions` hook** — central state in localStorage (`oc_permissions`), re-checks on open, individual request functions for each API.
+- **Permissions Dashboard** (Settings → Permissions tab) — every permission listed with colored status dot, description, usage, Allow/Retry/Open Settings buttons, "Request All" at top.
+- **Permissions covered**: Camera, Microphone, Location, Notifications, Clipboard, Persistent Storage, Screen Wake Lock, Device Motion, Bluetooth, Speech Recognition, Contacts, Screen Capture, Battery, Background Sync, Biometrics (Face ID/Touch ID).
+- **`useSpeech` hook** — SpeechRecognition for voice input, SpeechSynthesis for TTS.
+- **`useDeviceStatus` hook** — battery level/charging state, online/offline detection, wake lock management.
+- **`NetworkStatusBar`** — shown when offline or battery/location data available; offline banner in red.
+- Wake lock auto-acquired after onboarding to prevent iPad screen sleep.
 
 ## Stack
 

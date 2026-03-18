@@ -1,0 +1,172 @@
+Do not recreate or rewrite any existing functionality.
+Do not touch any existing backend logic.
+Only add maximum permissions and capabilities to the existing app.
+Fix all errors automatically. Do not ask questions. Do not stop.
+
+ADD THESE PERMISSIONS AND CAPABILITIES:
+
+═══════════════════════════════════════
+1. CAMERA & MICROPHONE
+═══════════════════════════════════════
+- Request camera permission on startup automatically
+- Request microphone permission on startup
+- Access front camera and back camera
+- Switch between cameras with a button
+- Record video and send to AI agent
+- Record audio and transcribe it using Groq Whisper API
+- Send live camera frames to AI for real time analysis
+- Show permission denied message if user blocks it
+- Store permission state and re-request if denied
+
+═══════════════════════════════════════
+2. FILE SYSTEM ACCESS
+═══════════════════════════════════════
+- Request full file system access
+- Read any file the user selects
+- Write files back to device
+- Access Downloads folder
+- Access Documents folder
+- Drag and drop files into the app
+- Support all file types: txt, pdf, images, code, zip, csv, json
+- Preview files inside the app
+- Send file contents to AI agent for analysis
+- AI agent can create and save new files to device
+
+═══════════════════════════════════════
+3. LOCATION
+═══════════════════════════════════════
+- Request location permission
+- Get precise GPS coordinates
+- Get city and country from coordinates
+- Send location context to AI agent automatically
+- AI can answer location aware questions
+- Show current location on a map widget
+
+═══════════════════════════════════════
+4. CLIPBOARD
+═══════════════════════════════════════
+- Read clipboard contents automatically
+- Write to clipboard
+- AI agent can read what is copied on device
+- Auto paste clipboard into chat when relevant
+- Monitor clipboard for new content
+
+═══════════════════════════════════════
+5. NOTIFICATIONS
+═══════════════════════════════════════
+- Request notification permission
+- Send push notifications when AI task completes
+- Send notification when agent needs input
+- Background notifications for long running tasks
+- Custom notification sounds
+
+═══════════════════════════════════════
+6. CONTACTS
+═══════════════════════════════════════
+- Request contacts permission
+- Read device contacts list
+- AI agent can reference contacts by name
+- Send emails or messages via contact info
+- Search contacts from chat
+
+═══════════════════════════════════════
+7. STORAGE & PERSISTENCE
+═══════════════════════════════════════
+- Request persistent storage permission
+- Store conversation history permanently
+- Store agent memory permanently
+- Store user preferences
+- Never lose data between sessions
+- Export all data as JSON backup
+
+═══════════════════════════════════════
+8. NETWORK & CONNECTIVITY
+═══════════════════════════════════════
+- Detect online and offline status
+- Work in offline mode with cached responses
+- Show network speed indicator
+- Auto reconnect when connection drops
+- Request background sync permission
+
+═══════════════════════════════════════
+9. SCREEN & DISPLAY
+═══════════════════════════════════════
+- Request screen wake lock so iPad never sleeps during tasks
+- Request full screen mode
+- Support landscape and portrait orientation
+- Hide browser UI bars for full immersive experience
+- Request screen capture permission for screenshots
+
+═══════════════════════════════════════
+10. DEVICE SENSORS
+═══════════════════════════════════════
+- Request accelerometer access
+- Request gyroscope access
+- Request battery status API
+- Detect if device is charging
+- Adjust performance based on battery level
+
+═══════════════════════════════════════
+11. BLUETOOTH (experimental)
+═══════════════════════════════════════
+- Request Bluetooth permission
+- Scan for nearby Bluetooth devices
+- Show list of nearby devices to AI agent
+- AI can reference nearby devices in responses
+
+═══════════════════════════════════════
+12. SPEECH
+═══════════════════════════════════════
+- Request speech recognition permission
+- Voice input button in chat
+- Speak responses out loud using text to speech
+- Wake word detection that listens for "Hey OpenClaw"
+- Continuous voice conversation mode
+- Support multiple languages
+
+═══════════════════════════════════════
+13. BIOMETRICS
+═══════════════════════════════════════
+- Request Face ID or Touch ID permission
+- Lock the app behind biometric auth
+- Unlock sensitive features with Face ID
+- Store API keys securely behind biometrics
+
+═══════════════════════════════════════
+14. BACKGROUND TASKS
+═══════════════════════════════════════
+- Request background processing permission
+- Keep AI agent running when app is minimized
+- Complete long tasks in background
+- Resume tasks when app reopens
+- Show progress in notification bar
+
+═══════════════════════════════════════
+IMPLEMENTATION RULES:
+═══════════════════════════════════════
+- Request ALL permissions on first app launch
+- Show a friendly permissions screen explaining why each is needed
+- If permission denied, show clear instructions to enable in Settings
+- Never crash if a permission is denied, just disable that feature
+- Store permission states in localStorage
+- Re-check permissions every time app opens
+- Add a permissions dashboard in Settings showing status of all permissions
+- Green dot = granted, Red dot = denied, Yellow = not yet asked
+- One tap to request any denied permission again
+
+═══════════════════════════════════════
+PERMISSIONS DASHBOARD UI:
+═══════════════════════════════════════
+Add a new Settings tab called "Permissions" showing:
+- List of every permission above
+- Current status with colored dot
+- What the permission is used for
+- Button to request or re-request each one
+- Button to open iOS Settings if permanently denied
+- "Request All" button at top to get everything at once
+
+DO NOT change any existing features.
+DO NOT rewrite the backend.
+ONLY ADD the permission system on top of what exists.
+Fix all errors automatically.
+Start now. Do not stop. Do not ask questions.
