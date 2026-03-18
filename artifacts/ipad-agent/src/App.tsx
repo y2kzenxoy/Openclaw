@@ -1,8 +1,11 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useState } from "react";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
+import { Sidebar } from "@/components/Sidebar";
+import { GatewayBar } from "@/components/GatewayBar";
 import { BottomNav } from "@/components/BottomNav";
 import { ChatPanel } from "@/pages/ChatPanel";
 import { TerminalPanel } from "@/pages/TerminalPanel";
@@ -21,21 +24,38 @@ const queryClient = new QueryClient({
   },
 });
 
-function Router() {
+type AgentStatus = "idle" | "working" | "error";
+
+function AppLayout() {
+  const [agentStatus, setAgentStatus] = useState<AgentStatus>("idle");
+  const [location] = useLocation();
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <main className="flex-1 pb-20 relative">
-        <Switch>
-          <Route path="/" component={ChatPanel} />
-          <Route path="/terminal" component={TerminalPanel} />
-          <Route path="/browser" component={BrowserPanel} />
-          <Route path="/files" component={FilesPanel} />
-          <Route path="/camera" component={CameraPanel} />
-          <Route path="/settings" component={SettingsPanel} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <BottomNav />
+    <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
+      {/* Left sidebar — hidden on mobile */}
+      <Sidebar agentStatus={agentStatus} />
+
+      {/* Main column */}
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+        {/* Gateway status bar */}
+        <GatewayBar agentStatus={agentStatus} currentPanel={location} />
+
+        {/* Panel content */}
+        <main className="flex-1 overflow-hidden pb-[80px] md:pb-0">
+          <Switch>
+            <Route path="/" component={() => <ChatPanel onStatusChange={setAgentStatus} />} />
+            <Route path="/terminal" component={TerminalPanel} />
+            <Route path="/browser" component={BrowserPanel} />
+            <Route path="/files" component={FilesPanel} />
+            <Route path="/camera" component={CameraPanel} />
+            <Route path="/settings" component={SettingsPanel} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+
+        {/* Bottom nav — visible only on mobile */}
+        <BottomNav />
+      </div>
     </div>
   );
 }
@@ -45,7 +65,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
+          <AppLayout />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

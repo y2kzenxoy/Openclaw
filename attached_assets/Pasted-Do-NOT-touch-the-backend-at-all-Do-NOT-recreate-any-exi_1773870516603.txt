@@ -1,0 +1,86 @@
+Do NOT touch the backend at all.
+Do NOT recreate any existing functionality.
+Only update the frontend CSS and HTML to match 
+the exact OpenClaw UI style from this repo:
+https://github.com/openclaw/openclaw
+
+REFERENCE THESE FOR THE EXACT LOOK:
+- Main UI repo: https://github.com/openclaw/openclaw/tree/main/ui
+- Dashboard UI: https://github.com/grp06/openclaw-studio
+- Chat UI reference: https://github.com/MarlBurroW/pinchchat
+
+EXACT OPENCLAW UI STYLE TO COPY:
+
+1. COLORS - use these exact values:
+- Background: dark neutral, near black
+- Panel backgrounds: slightly lighter dark
+- Accent: lobster red/orange theme
+- Text: clean white and light gray
+- Borders: subtle dark borders
+- Status indicators: colored dots (green=active, red=error, yellow=busy)
+
+2. LAYOUT:
+- Left sidebar with navigation icons and labels
+- Top header bar showing gateway connection status
+- Main content area with panels
+- Session list like ChatGPT sidebar showing all active agents
+- Bottom input bar pinned to screen
+
+3. CHAT INTERFACE:
+- Sessions listed in left sidebar
+- Switch between agent conversations
+- Stream responses token by token in real time
+- Tool call visualization with colored badges showing what tool is running
+- Expandable tool call results
+- Token usage progress bar per session
+- Inline image rendering in chat
+- Thinking trace visible while agent processes
+
+4. AGENT STATUS:
+- Show agent status: idle, working, thinking, error
+- Live indicator dot that pulses when agent is active
+- Show current tool being used
+- Show token count and context window usage
+
+5. GATEWAY CONNECTION PANEL:
+- Show connection status to backend
+- Gateway URL display
+- Token/auth status
+- Reconnect button if disconnected
+
+6. TOOL CALL VISUALIZATION:
+- Each tool call shows as a colored badge
+- Badge colors: blue=search, green=file, yellow=code, red=error
+- Click to expand and see full tool parameters and results
+- Show timing of each tool call
+
+7. MULTI SESSION SUPPORT:
+- List all active agent sessions in sidebar
+- Each session shows: agent name, status dot, last message preview
+- Click to switch between sessions
+- Show cron jobs and background tasks separately
+
+8. IPAD OPTIMIZATIONS keep these:
+- Touch friendly tap targets
+- Responsive layout
+- Bottom tab navigation on mobile
+- No hover-only interactions
+
+KEEP EVERYTHING ELSE:
+- All Python backend code unchanged
+- All API endpoints unchanged  
+- All JavaScript logic unchanged
+- All existing IDs and class names JS depends on
+- All existing features working
+
+ONLY CHANGE:
+- CSS styles
+- HTML template structure and layout
+- Add new UI components for tool visualization
+- Add session sidebar
+- Add gateway status bar
+
+START NOW. Do it automatically. Fix all errors. 
+Do not ask questions. Do not stop.
+When done show me a screenshot or describe 
+exactly what changed.
