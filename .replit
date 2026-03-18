@@ -35,3 +35,6 @@ ENABLE_CAMERA = "true"
 ENABLE_FILE_ACCESS = "true"
 ENABLE_TERMINAL = "true"
 ENABLE_BROWSER = "true"
+
+[nix]
+packages = ["gh"]

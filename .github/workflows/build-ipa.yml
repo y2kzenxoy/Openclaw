@@ -1,7 +1,5 @@
 name: Build IPA
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 jobs:
   build-ios:
@@ -26,17 +24,59 @@ jobs:
           xcodebuild \
             -workspace ios/App/App.xcworkspace \
             -scheme App \
+            -sdk iphoneos \
             -configuration Release \
             -archivePath $PWD/build/App.xcarchive \
             archive \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
-          mkdir -p build/IPA
-          cp -r $PWD/build/App.xcarchive/Products/Applications/*.app build/IPA/
-          cd build/IPA && zip -r OpenClaw.ipa *.app
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO
+
+
+
+cat > .github/workflows/build-ipa.yml << 'EOF'
+name: Build IPA
+on:
+  workflow_dispatch:
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Install Capacitor
+        run: npm install -g @capacitor/cli @capacitor/core @capacitor/ios
+      - name: Add iOS
+        run: npx cap add ios || true
+      - name: Sync
+        run: npx cap sync ios
+      - name: Pod install
+        run: cd ios/App && pod install
+      - name: Build IPA
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $PWD/build/App.xcarchive \
+            archive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO
+          xcodebuild \
+            -exportArchive \
+            -archivePath $PWD/build/App.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath $PWD/build/IPA
       - uses: actions/upload-artifact@v4
         with:
           name: OpenClaw-IPA
-          path: build/IPA/OpenClaw.ipa
+          path: build/IPA/*.ipa
           retention-days: 30
