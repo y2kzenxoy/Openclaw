@@ -1,0 +1,83 @@
+Do everything automatically. Do not ask questions. Do not stop. Fix all errors yourself.
+
+GOAL:
+The app is already built. Just package it into a proper offline IPA file.
+No rebuilding. No touching backend. No server URLs.
+
+STEP 1 - FIND THE BUILT FILES:
+- Look in these folders for index.html: artifacts/ipad-agent/, dist/, public/, client/
+- Once found copy everything into dist/ folder
+- Confirm dist/index.html exists
+
+STEP 2 - FIX CAPACITOR CONFIG:
+- Open capacitor.config.json
+- Remove the server.url line completely
+- Make it look exactly like this:
+{
+  "appId": "com.openclaw.app",
+  "appName": "OpenClaw",
+  "webDir": "dist",
+  "ios": {
+    "scheme": "OpenClaw",
+    "backgroundColor": "#000000"
+  }
+}
+- Run: npx cap sync ios
+- This bundles the dist/ files directly inside the iOS project
+
+STEP 3 - UPDATE GITHUB ACTIONS WORKFLOW:
+- Open .github/workflows/build-ipa.yml
+- Replace the entire file with this exact content:
+
+name: Build Offline IPA
+on:
+  workflow_dispatch:
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Sync Capacitor
+        run: npx cap sync ios
+      - name: Pod install
+        run: cd ios/App && pod install
+      - name: Build IPA
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $PWD/build/App.xcarchive \
+            archive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO
+          mkdir -p build/IPA/Payload
+          cp -r build/App.xcarchive/Products/Applications/App.app build/IPA/Payload/
+          cd build/IPA && zip -r OpenClaw.ipa Payload/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenClaw-IPA
+          path: build/IPA/OpenClaw.ipa
+          retention-days: 30
+
+STEP 4 - PUSH TO GITHUB:
+- git add .
+- git commit -m "Bundle app offline into IPA"
+- git push origin master
+
+STEP 5 - WHEN DONE PRINT EXACTLY THIS:
+✅ Done! Go to:
+https://github.com/y2kzenxoy/Openclaw/actions/workflows/build-ipa.yml
+Tap Run workflow → Run workflow
+Wait 10 minutes then download OpenClaw-IPA artifact.
+The app will be fully offline, no Replit needed!
+
+GO NOW. DO NOT STOP.
